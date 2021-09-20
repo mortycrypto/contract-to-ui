@@ -1,38 +1,88 @@
+body {
+	background-color: #282c34 !important;
+	font-size: 1rem;
+}
+
+.card {
+	font-size: 0.9rem;
+	margin-bottom: 0.5rem;
+}
+
+a {
+	width: 0 !important;
+}
+
+.container {
+	min-height: 100vh;
+}
+
 .App {
-  text-align: center;
+	text-align: center;
 }
 
 .App-logo {
-  height: 40vmin;
-  pointer-events: none;
+	height: 20vmin;
+	pointer-events: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+	.App-logo {
+		animation: App-logo-spin infinite 40s linear;
+	}
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+	font-size: calc(10px + 2vmin);
+	color: white;
+	margin-top: 10px;
 }
 
 .App-link {
-  color: #61dafb;
+	color: #61dafb;
 }
 
 @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+table {
+	font-size: 0.8rem;
+	width: 100%;
+}
+
+.accordion-body {
+	color: black;
+	font-size: 0.9rem;
+	padding: 1em 2em !important;
+}
+
+.accordion-button > .row {
+	width: 100%;
+	font-variant: small-caps;
+}
+
+.tl-method-signature {
+	/* background-color: blue; */
+	padding: 1em;
+	font-weight: bold;
+	border-bottom: 1px solid gray;
+	margin-bottom: 1em;
+}
+
+.tl-method-params-name,
+.tl-method-params-value {
+	font-variant: small-caps;
+}
+
+.tl-method-params-name {
+	margin-bottom: 1em;
 }
