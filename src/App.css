@@ -1,11 +1,18 @@
 body {
 	background-color: #282c34 !important;
 	font-size: 1rem;
+	color: whitesmoke;
+}
+
+.toast-container.position-absolute {
+	position: fixed !important;
+	z-index: 9999;
 }
 
 .card {
 	font-size: 0.9rem;
 	margin-bottom: 0.5rem;
+	color: whitesmoke;
 }
 
 a {

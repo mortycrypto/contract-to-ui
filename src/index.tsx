@@ -8,14 +8,20 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import RPCProviderContext from "./contexts/RPCProviderContext";
 import AddressContext from "./contexts/AddressContext";
+import MsgContext from "./contexts/MsgContext";
+import AccountContext from "./contexts/AccountContext";
 
 ReactDOM.render(
 	<React.StrictMode>
-		<RPCProviderContext.Provider>
-			<AddressContext.Provider>
-				<App />
-			</AddressContext.Provider>
-		</RPCProviderContext.Provider>
+		<MsgContext.Provider>
+			<AccountContext.Provider>
+				<RPCProviderContext.Provider>
+					<AddressContext.Provider>
+						<App />
+					</AddressContext.Provider>
+				</RPCProviderContext.Provider>
+			</AccountContext.Provider>
+		</MsgContext.Provider>
 	</React.StrictMode>,
 	document.getElementById("root")
 );

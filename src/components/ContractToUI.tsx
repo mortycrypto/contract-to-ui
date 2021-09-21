@@ -1,19 +1,10 @@
 import { ethers } from "ethers";
 import { useEffect, useState } from "react";
-import { Button, Card, Col, Container, Form, Row, Tab, Tabs, Toast } from "react-bootstrap";
+import { Button, Card, Form, Row, Tab, Tabs } from "react-bootstrap";
 import abi from "../abi.json";
+import { useAccountContext } from "../contexts/AccountContext";
 import { useAddressContext } from "../contexts/AddressContext";
-
-enum TypeMsg {
-	Error = "danger",
-	Info = "primary",
-}
-
-interface Msg {
-	text: string;
-	type: TypeMsg;
-	show: boolean;
-}
+import { useMsgContext, TypeMsg } from "../contexts/MsgContext";
 
 interface Param {
 	name: string;
@@ -34,29 +25,14 @@ const ContractToUI = () => {
 		contract: ethers.Contract | undefined,
 		setContract: React.Dispatch<React.SetStateAction<ethers.Contract | undefined>>
 	] = useState();
-	const [account, setAccount] = useState("");
 	const [results, setResults]: [
 		results: ContractInfo | undefined,
 		setResults: React.Dispatch<React.SetStateAction<ContractInfo | undefined>>
 	] = useState();
-	const [msg, setMsg]: [msg: Msg, setMsg: React.Dispatch<React.SetStateAction<Msg>>] = useState({
-		text: "",
-		type: TypeMsg.Info,
-		show: false,
-	} as Msg);
+	const { msg, setMsg } = useMsgContext();
 
 	const { searching, address, validAddress, setSearching } = useAddressContext();
-
-	useEffect(() => {
-		if (!window["ethereum"]) return;
-
-		window["ethereum"]
-			.request({ method: "eth_requestAccounts" })
-			.then((accounts: string[]) => {
-				setAccount(accounts[0]);
-			})
-			.catch((err: any) => console.log(err));
-	}, []);
+	const { account } = useAccountContext();
 
 	useEffect(() => {
 		if (!searching) return;
@@ -157,7 +133,7 @@ const ContractToUI = () => {
 
 		const data = results[name];
 		return (
-			<Row key={idx}>
+			<Row key={`${idx}:${name}:${buttonText}`}>
 				<Card bg='dark'>
 					<Card.Header>{name}</Card.Header>
 					<Card.Body>
@@ -165,7 +141,7 @@ const ContractToUI = () => {
 							<>
 								{data.params.map((d, i) => (
 									<Form.Control
-										key={i}
+										key={`${idx}:${name}:${Math.random()}`}
 										type='text'
 										name={`${d.type}-${d.name}`}
 										placeholder={`${d.name} (${d.type})`}
@@ -188,41 +164,26 @@ const ContractToUI = () => {
 	};
 
 	return (
-		<>
-			<Toast
-				show={msg.show}
-				bg={msg.type}
-				delay={5000}
-				autohide
-				onClose={() => setMsg({ text: "", type: TypeMsg.Info, show: false })}
-			>
-				<Toast.Body>{msg.text}</Toast.Body>
-			</Toast>
-			<Container>
-				<Row>
-					<Col>
-						{results && (
-							<Tabs defaultActiveKey='readeables' id='tab' className='mb-3'>
-								<Tab eventKey='readeables' title='Read'>
-									{abi
-										.filter((m) => m["type"] === "function" && m["stateMutability"] === "view")
-										.map((m, idx) => (
-											<Method name={m["name"]} id={idx} buttonText='READ CONTRACT' />
-										))}
-								</Tab>
-								<Tab eventKey='writeables' title='Write'>
-									{abi
-										.filter((m) => m["type"] === "function" && m["stateMutability"] !== "view")
-										.map((m, idx) => (
-											<Method name={m["name"]} id={idx} buttonText='WRITE CONTRACT' />
-										))}
-								</Tab>
-							</Tabs>
-						)}
-					</Col>
-				</Row>
-			</Container>
-		</>
+		<Row>
+			{results && (
+				<Tabs defaultActiveKey='readeables' id='tab' className='mb-3'>
+					<Tab eventKey='readeables' title='Read'>
+						{abi
+							.filter((m) => m["type"] === "function" && m["stateMutability"] === "view")
+							.map((m, idx) => (
+								<Method name={m["name"]} id={idx} buttonText='READ CONTRACT' key={idx} />
+							))}
+					</Tab>
+					<Tab eventKey='writeables' title='Write'>
+						{abi
+							.filter((m) => m["type"] === "function" && m["stateMutability"] !== "view")
+							.map((m, idx) => {
+								return <Method name={m["name"]} id={idx} buttonText='WRITE CONTRACT' key={idx * 100} />;
+							})}
+					</Tab>
+				</Tabs>
+			)}
+		</Row>
 	);
 };
 
