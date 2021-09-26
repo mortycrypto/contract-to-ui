@@ -5,7 +5,7 @@ import RPCProviderContext, { useRPCProvierContext } from "../contexts/RPCProvide
 
 const SearchBar = () => {
 	const [addr, setAddr] = useState("");
-	const { setSearching, searching, validAddress, setAddress } = useAddressContext();
+	const { setSearching, searching, validAddress, setAddress, address } = useAddressContext();
 	const { provider } = useRPCProvierContext();
 
 	const [isContract, setIsContract] = useState(true);
@@ -14,9 +14,13 @@ const SearchBar = () => {
 
 	useEffect(() => {
 		if (!searching) return;
-		toggleShowErrorMsg(!isContract && validAddress);
+		// toggleShowErrorMsg(!isContract && validAddress);
 		setSearching(false);
 	}, [searching, isContract, validAddress, setSearching]);
+
+	useEffect(() => {
+		if (address !== "") setAddr(address);
+	}, [address]);
 
 	const onClick = async (address: string) => {
 		const valid: boolean = await validAddressFormat(address);

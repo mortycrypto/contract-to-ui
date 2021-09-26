@@ -3,7 +3,7 @@ import { Container, Spinner, Toast, ToastContainer } from "react-bootstrap";
 import ContractToUI from "./components/ContractToUI";
 import { useAddressContext } from "./contexts/AddressContext";
 import Header from "./components/Header";
-import { useMsgContext, TypeMsg } from "./contexts/MsgContext";
+import { useMsgContext } from "./contexts/MsgContext";
 
 // Ejemplo: 0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82 BSC (Cake token).
 
